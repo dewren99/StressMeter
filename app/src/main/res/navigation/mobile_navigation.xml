@@ -9,5 +9,18 @@
         android:id="@+id/nav_home"
         android:name="com.example.stressmeter.ui.home.StressMeterFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_stress_meter" />
+        tools:layout="@layout/fragment_stress_meter" >
+        <action
+            android:id="@+id/action_nav_home_to_imageSelectionConfirmFragment"
+            app:destination="@id/imageSelectionConfirmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageSelectionConfirmFragment"
+        android:name="com.example.stressmeter.ui.home.ImageSelectionConfirmFragment"
+        android:label="fragment_image_selection_confirm"
+        tools:layout="@layout/fragment_image_selection_confirm" >
+        <action
+            android:id="@+id/action_imageSelectionConfirmFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
 </navigation>

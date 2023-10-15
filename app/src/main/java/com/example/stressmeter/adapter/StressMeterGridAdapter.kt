@@ -15,8 +15,9 @@ class StressMeterGridAdapter(private val context: Context, private val imageUrls
         val view =
             convertView ?: LayoutInflater.from(context)
                 .inflate(R.layout.grid_item_stress_meter, parent, false)
-        view.findViewById<ImageView>(R.id.image_view_item).setImageResource(imageUrls[position])
-
+        val imageView: ImageView = view.findViewById(R.id.image_view_item)
+        imageView.setImageResource(imageUrls[position])
+        imageView.tag = imageUrls[position]
         return view
     }
 }

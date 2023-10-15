@@ -6,8 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.GridView
+import android.widget.ImageView
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.stressmeter.R
 import com.example.stressmeter.adapter.StressMeterGridAdapter
 import com.example.stressmeter.databinding.FragmentStressMeterBinding
@@ -26,7 +30,8 @@ class StressMeterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val stressMeterViewModel = ViewModelProvider(this)[StressMeterViewModel::class.java]
+        val stressMeterViewModel =
+            ViewModelProvider(requireActivity())[StressMeterViewModel::class.java]
 
         _binding = FragmentStressMeterBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -36,9 +41,15 @@ class StressMeterFragment : Fragment() {
 
         stressMeterViewModel.imageIdsMutable.observe(viewLifecycleOwner) {
             gridView.adapter = StressMeterGridAdapter(
-                requireContext(),
-                it
+                requireContext(), it
             )
+        }
+
+        gridView.setOnItemClickListener { parent, view, position, id ->
+            val resourceId = view.findViewById<ImageView>(R.id.image_view_item).tag as Int
+            println("resourceId: $resourceId")
+            stressMeterViewModel.setSelectImage(resourceId)
+            findNavController().navigate(R.id.action_nav_home_to_imageSelectionConfirmFragment)
         }
 
         buttonMoreImages.setOnClickListener {

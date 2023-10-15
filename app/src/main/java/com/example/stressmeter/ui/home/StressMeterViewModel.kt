@@ -62,10 +62,17 @@ class StressMeterViewModel : ViewModel() {
     private var index = 0
 
     private var _activeImageIds = MutableLiveData<List<Int>>()
+    private var _selectedImageId = MutableLiveData<Int>()
 
+    val selectedImageMutable: LiveData<Int>
+        get() = _selectedImageId
 
     val imageIdsMutable: LiveData<List<Int>>
         get() = _activeImageIds
+
+    fun setSelectImage(id: Int) {
+        _selectedImageId.value = id
+    }
 
     fun next() {
         // get next 16 images
