@@ -56,7 +56,7 @@ class StressMeterFragment : Fragment() {
             stressMeterViewModel.next()
         }
 
-        stressMeterViewModel.next()
+        stressMeterViewModel.next(false)
         return root
     }
 

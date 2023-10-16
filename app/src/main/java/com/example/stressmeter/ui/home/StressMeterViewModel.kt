@@ -26,7 +26,6 @@ class StressMeterViewModel : ViewModel() {
         R.drawable.psm_dog_sleeping,
         R.drawable.psm_headache,
         R.drawable.psm_headache2,
-        R.drawable.psm_clutter,
         R.drawable.psm_hiking3,
         R.drawable.psm_kettle,
         R.drawable.psm_lake3,
@@ -74,18 +73,25 @@ class StressMeterViewModel : ViewModel() {
         _selectedImageId.value = id
     }
 
-    fun next() {
+
+    fun next(iterateIndex: Boolean = true) {
         // get next 16 images
         val curr = _imageIds
         val size = _imageIds.size
+
+        if (iterateIndex)
+            index = (index + 16) % size
+
+        _activeImageIds.value = getPage(curr, index, size)
+    }
+
+    private fun getPage(curr: List<Int>, index: Int, size: Int): List<Int> {
         val nextIndex = (index + 16) % size
         val items: List<Int> = if (nextIndex > index) {
             curr.subList(index, nextIndex)
         } else {
             curr.subList(index, size) + curr.subList(0, nextIndex)
         }
-
-        _activeImageIds.value = items
-        index = nextIndex
+        return items
     }
 }
