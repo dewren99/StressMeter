@@ -4,6 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.stressmeter.R
+import com.example.stressmeter.managers.CsvFileManager
+import com.example.stressmeter.managers.Store
+import java.util.Date
+import kotlin.time.TimeSource
+import kotlin.time.measureTime
 
 private val imageToStressLevelMap = mapOf(
     R.drawable.psm_alarm_clock to 5,
@@ -58,60 +63,7 @@ private val imageToStressLevelMap = mapOf(
 )
 
 class StressMeterViewModel : ViewModel() {
-    private val _imageIds = listOf(
-        R.drawable.psm_alarm_clock,
-        R.drawable.fish_normal017,
-        R.drawable.psm_alarm_clock2,
-        R.drawable.psm_angry_face,
-        R.drawable.psm_anxious,
-        R.drawable.psm_baby_sleeping,
-        R.drawable.psm_exam4,
-        R.drawable.psm_gambling4,
-        R.drawable.psm_bar,
-        R.drawable.psm_barbed_wire2,
-        R.drawable.psm_beach3,
-        R.drawable.psm_bird3,
-        R.drawable.psm_blue_drop,
-        R.drawable.psm_cat,
-        R.drawable.psm_clutter,
-        R.drawable.psm_clutter3,
-        R.drawable.psm_dog_sleeping,
-        R.drawable.psm_headache,
-        R.drawable.psm_headache2,
-        R.drawable.psm_hiking3,
-        R.drawable.psm_kettle,
-        R.drawable.psm_lake3,
-        R.drawable.psm_lawn_chairs3,
-        R.drawable.psm_lonely,
-        R.drawable.psm_lonely2,
-        R.drawable.psm_mountains11,
-        R.drawable.psm_neutral_child,
-        R.drawable.psm_neutral_person2,
-        R.drawable.psm_peaceful_person,
-        R.drawable.psm_puppy,
-        R.drawable.psm_puppy3,
-        R.drawable.psm_reading_in_bed2,
-        R.drawable.psm_running3,
-        R.drawable.psm_running4,
-        R.drawable.psm_sticky_notes2,
-        R.drawable.psm_stressed_cat,
-        R.drawable.psm_stressed_person,
-        R.drawable.psm_stressed_person12,
-        R.drawable.psm_stressed_person3,
-        R.drawable.psm_stressed_person4,
-        R.drawable.psm_stressed_person6,
-        R.drawable.psm_stressed_person7,
-        R.drawable.psm_stressed_person8,
-        R.drawable.psm_talking_on_phone2,
-        R.drawable.psm_to_do_list,
-        R.drawable.psm_to_do_list3,
-        R.drawable.psm_wine3,
-        R.drawable.psm_work4,
-        R.drawable.psm_yoga4,
-    )
-
-    private var index = 0
-
+    private var _index = 0
     private var _activeImageIds = MutableLiveData<List<Int>>()
     private var _selectedImageId = MutableLiveData<Int>()
     private val _imageKeys = imageToStressLevelMap.keys
@@ -126,15 +78,27 @@ class StressMeterViewModel : ViewModel() {
         _selectedImageId.value = id
     }
 
+    fun saveSelectedImage() {
+        if (selectedImageMutable.value == null) {
+            throw UnsupportedOperationException("Attempted to save null as image")
+        }
+        // prepare data to be saved in csv
+        val csvCol = emptyList<String>().toMutableList()
+        val timestamp = Date().time.toString()
+        val line =
+            "${selectedImageMutable.value.toString()},${getStressScore(selectedImageMutable.value!!)},$timestamp"
+        csvCol.add(line)
+        CsvFileManager.createOrUpdateCSV(csvCol)
+    }
+
     fun next(iterateIndex: Boolean = true) {
         // get next 16 images
         val curr = _imageKeys.toList()
         val size = curr.size
 
-        if (iterateIndex)
-            index = (index + 16) % size
+        if (iterateIndex) _index = (_index + 16) % size
 
-        _activeImageIds.value = getPage(curr, index, size)
+        _activeImageIds.value = getPage(curr, _index, size)
     }
 
     private fun getPage(curr: List<Int>, index: Int, size: Int): List<Int> {

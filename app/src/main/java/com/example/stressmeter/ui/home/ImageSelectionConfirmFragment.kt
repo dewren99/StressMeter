@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.stressmeter.R
 
 class ImageSelectionConfirmFragment : Fragment() {
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -30,6 +29,10 @@ class ImageSelectionConfirmFragment : Fragment() {
 
         view.findViewById<Button>(R.id.button_stress_image_cancel).setOnClickListener {
             findNavController().navigate(R.id.action_imageSelectionConfirmFragment_to_nav_home)
+        }
+        view.findViewById<Button>(R.id.button_stress_image_save).setOnClickListener {
+            stressMeterViewModel.saveSelectedImage()
+            requireActivity().finish()
         }
         return view
     }

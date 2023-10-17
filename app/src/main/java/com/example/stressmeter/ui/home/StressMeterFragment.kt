@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.stressmeter.R
 import com.example.stressmeter.adapter.StressMeterGridAdapter
 import com.example.stressmeter.databinding.FragmentStressMeterBinding
+import com.example.stressmeter.managers.PermissionsManager
 
 class StressMeterFragment : Fragment() {
 
@@ -25,6 +26,7 @@ class StressMeterFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var permissionsManager: PermissionsManager
 
 
     override fun onCreateView(
@@ -35,6 +37,8 @@ class StressMeterFragment : Fragment() {
 
         _binding = FragmentStressMeterBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        permissionsManager = PermissionsManager(this)
 
         gridView = binding.gridViewStressMeter
         buttonMoreImages = binding.buttonMoreImages
@@ -57,7 +61,18 @@ class StressMeterFragment : Fragment() {
         }
 
         stressMeterViewModel.next(false)
+        requestPermissions()
         return root
+    }
+
+
+    private fun requestPermissions() {
+        if (!permissionsManager.hasReadStoragePermission()) {
+            permissionsManager.requestPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+        if (!permissionsManager.hasWriteStoragePermission()) {
+            permissionsManager.requestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
     }
 
     override fun onDestroyView() {

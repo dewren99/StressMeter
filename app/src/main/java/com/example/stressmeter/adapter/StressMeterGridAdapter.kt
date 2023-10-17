@@ -26,7 +26,6 @@ class StressMeterGridAdapter(private val context: Context, private val imageUrls
         imageView.setImageResource(imageResourceId)
         imageView.tag = imageResourceId
         textView.text = desc
-        textView.background.alpha = 175
         return view
     }
 }

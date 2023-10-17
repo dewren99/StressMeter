@@ -12,6 +12,10 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.stressmeter.databinding.ActivityMainBinding
+import com.example.stressmeter.managers.CsvFileManager
+import com.example.stressmeter.managers.PermissionsManager
+import com.example.stressmeter.managers.SharedPreferencesManager
+import com.example.stressmeter.managers.Store
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        CsvFileManager.init(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
