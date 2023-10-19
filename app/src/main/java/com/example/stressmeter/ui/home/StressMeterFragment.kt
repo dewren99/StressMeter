@@ -27,29 +27,37 @@ class StressMeterFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var permissionsManager: PermissionsManager
+    private lateinit var stressMeterViewModel: StressMeterViewModel
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val stressMeterViewModel =
+        stressMeterViewModel =
             ViewModelProvider(requireActivity())[StressMeterViewModel::class.java]
 
         _binding = FragmentStressMeterBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         permissionsManager = PermissionsManager(this)
-
         gridView = binding.gridViewStressMeter
         buttonMoreImages = binding.buttonMoreImages
 
+        initListeners()
+
+        stressMeterViewModel.next(false)
+        requestPermissions()
+        return root
+    }
+
+    private fun initListeners() {
         stressMeterViewModel.imageIdsMutable.observe(viewLifecycleOwner) {
             gridView.adapter = StressMeterGridAdapter(
                 requireContext(), it
             )
         }
 
-        gridView.setOnItemClickListener { parent, view, position, id ->
+        gridView.setOnItemClickListener { _, view, _, _ ->
             val resourceId = view.findViewById<ImageView>(R.id.image_view_item).tag as Int
             println("resourceId: $resourceId")
             stressMeterViewModel.setSelectImage(resourceId)
@@ -59,12 +67,7 @@ class StressMeterFragment : Fragment() {
         buttonMoreImages.setOnClickListener {
             stressMeterViewModel.next()
         }
-
-        stressMeterViewModel.next(false)
-        requestPermissions()
-        return root
     }
-
 
     private fun requestPermissions() {
         if (!permissionsManager.hasReadStoragePermission()) {

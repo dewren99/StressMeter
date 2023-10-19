@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.stressmeter.R
+import com.example.stressmeter.data.StressData
 import com.example.stressmeter.managers.CsvFileManager
 import com.example.stressmeter.managers.Store
 import java.util.Date
@@ -83,11 +84,11 @@ class StressMeterViewModel : ViewModel() {
             throw UnsupportedOperationException("Attempted to save null as image")
         }
         // prepare data to be saved in csv
+        val resourceId = selectedImageMutable.value!!
+        val score = getStressScore(resourceId)
+        val stressData = StressData(resourceId, score)
         val csvCol = emptyList<String>().toMutableList()
-        val timestamp = Date().time.toString()
-        val line =
-            "${selectedImageMutable.value.toString()},${getStressScore(selectedImageMutable.value!!)},$timestamp"
-        csvCol.add(line)
+        csvCol.add(stressData.toCSV())
         CsvFileManager.createOrUpdateCSV(csvCol)
     }
 
