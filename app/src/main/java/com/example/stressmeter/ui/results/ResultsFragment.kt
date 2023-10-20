@@ -3,11 +3,14 @@ package com.example.stressmeter.ui.results
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.core.view.get
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import com.example.stressmeter.data.StressData
 import com.example.stressmeter.databinding.FragmentResultsBinding
@@ -48,7 +51,7 @@ class ResultsFragment : Fragment() {
         val aaChartModel =
             AAChartModel().chartType(AAChartType.Area).dataLabelsEnabled(true)
                 .yAxisTitle("Stress Score").zoomType(AAChartZoomType.XY).backgroundColor("#fff")
-                .title("Your Stress Levels").series(
+                .title("Your Stress Levels").subtitle("Stress Score / Instance").series(
                     arrayOf(
                         AASeriesElement().name("Score").data(chartData.toTypedArray())
                     )
@@ -93,6 +96,8 @@ class ResultsFragment : Fragment() {
 
             row.addView(c1)
             row.addView(c2)
+
+            c2.textAlignment = View.TEXT_ALIGNMENT_CENTER
 
             table.addView(row)
         }

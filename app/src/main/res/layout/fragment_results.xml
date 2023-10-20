@@ -24,34 +24,57 @@
         app:layout_constraintTop_toBottomOf="@id/chart_results">
 
         <TextView
+            android:id="@+id/table_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
             android:text="Summary of Results"
             android:textAlignment="center"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/results_table_layout"
+            app:layout_constraintBottom_toTopOf="@id/table_fixed_headers"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TableLayout
-            android:id="@+id/results_table_layout"
+            android:id="@+id/table_fixed_headers"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:stretchColumns="*"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_default="percent"
-            app:layout_constraintHeight_percent="0.85">
+            app:layout_constraintBottom_toTopOf="@+id/table_container"
+            app:layout_constraintTop_toTopOf="@+id/table_title">
 
             <TableRow android:background="#00BCD4">
 
-                <TextView
-                    android:text="Timestamp"
-                    android:textSize="16sp" />
+                <TextView android:text="Timestamp" />
 
                 <TextView
+                    android:layout_marginLeft="50dp"
                     android:text="Score"
-                    android:textSize="16sp" />
+                    android:textAlignment="center" />
             </TableRow>
         </TableLayout>
+
+
+        <ScrollView
+            android:id="@+id/table_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:contentDescription="Scores and timestamps"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/table_fixed_headers">
+
+            <TableLayout
+                android:id="@+id/results_table_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:stretchColumns="*"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.85">
+
+            </TableLayout>
+        </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

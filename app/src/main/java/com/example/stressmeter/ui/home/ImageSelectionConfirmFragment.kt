@@ -11,6 +11,7 @@ import android.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.stressmeter.R
+import com.example.stressmeter.managers.MediaPlayerManager
 
 class ImageSelectionConfirmFragment : Fragment() {
     override fun onCreateView(
@@ -32,6 +33,7 @@ class ImageSelectionConfirmFragment : Fragment() {
         }
         view.findViewById<Button>(R.id.button_stress_image_save).setOnClickListener {
             stressMeterViewModel.saveSelectedImage()
+//            MediaPlayerManager.release()
             requireActivity().finish()
         }
         return view

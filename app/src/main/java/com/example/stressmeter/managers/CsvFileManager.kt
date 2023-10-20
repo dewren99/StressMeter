@@ -16,7 +16,6 @@ class CsvFileManager {
         }
 
         fun createOrUpdateCSV(data: List<String>) {
-            println(_filesPath)
             try {
                 val file = File(_filesPath)
                 val writer =
@@ -33,7 +32,6 @@ class CsvFileManager {
         }
 
         fun readCSV(): List<String> {
-            println(_filesPath)
             val lines = mutableListOf<String>()
             try {
                 val file = File(_filesPath)
@@ -48,7 +46,6 @@ class CsvFileManager {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            println(lines)
             return lines
         }
     }

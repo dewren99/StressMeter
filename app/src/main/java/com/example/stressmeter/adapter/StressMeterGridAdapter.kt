@@ -17,15 +17,14 @@ class StressMeterGridAdapter(private val context: Context, private val imageUrls
             convertView ?: LayoutInflater.from(context)
                 .inflate(R.layout.grid_item_stress_meter, parent, false)
         val imageView: ImageView = view.findViewById(R.id.image_view_item)
-        val textView: TextView = view.findViewById(R.id.image_score)
-
         val imageResourceId = imageUrls[position]
-        val imageStressScore = StressMeterViewModel.getStressScore(imageResourceId).toString()
-        val desc = "Score: $imageStressScore"
-        println(desc)
         imageView.setImageResource(imageResourceId)
         imageView.tag = imageResourceId
-        textView.text = desc
+
+//val imageStressScore = StressMeterViewModel.getStressScore(imageResourceId).toString()
+//        val textView: TextView = view.findViewById(R.id.image_score)
+//        val desc = "Score: $imageStressScore"
+//        textView.text = desc
         return view
     }
 }

@@ -7,15 +7,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.GridView
 import android.widget.ImageView
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.stressmeter.R
 import com.example.stressmeter.adapter.StressMeterGridAdapter
 import com.example.stressmeter.databinding.FragmentStressMeterBinding
-import com.example.stressmeter.managers.PermissionsManager
+import com.example.stressmeter.managers.MediaPlayerManager
 
 class StressMeterFragment : Fragment() {
 
@@ -26,7 +24,6 @@ class StressMeterFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var permissionsManager: PermissionsManager
     private lateinit var stressMeterViewModel: StressMeterViewModel
 
 
@@ -39,14 +36,12 @@ class StressMeterFragment : Fragment() {
         _binding = FragmentStressMeterBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        permissionsManager = PermissionsManager(this)
         gridView = binding.gridViewStressMeter
         buttonMoreImages = binding.buttonMoreImages
 
         initListeners()
 
         stressMeterViewModel.next(false)
-        requestPermissions()
         return root
     }
 
@@ -59,22 +54,13 @@ class StressMeterFragment : Fragment() {
 
         gridView.setOnItemClickListener { _, view, _, _ ->
             val resourceId = view.findViewById<ImageView>(R.id.image_view_item).tag as Int
-            println("resourceId: $resourceId")
             stressMeterViewModel.setSelectImage(resourceId)
             findNavController().navigate(R.id.action_nav_home_to_imageSelectionConfirmFragment)
         }
 
         buttonMoreImages.setOnClickListener {
+            MediaPlayerManager.stop()
             stressMeterViewModel.next()
-        }
-    }
-
-    private fun requestPermissions() {
-        if (!permissionsManager.hasReadStoragePermission()) {
-            permissionsManager.requestPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-        if (!permissionsManager.hasWriteStoragePermission()) {
-            permissionsManager.requestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
     }
 

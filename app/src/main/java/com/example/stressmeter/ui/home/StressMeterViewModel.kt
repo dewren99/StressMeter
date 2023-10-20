@@ -67,7 +67,7 @@ class StressMeterViewModel : ViewModel() {
     private var _index = 0
     private var _activeImageIds = MutableLiveData<List<Int>>()
     private var _selectedImageId = MutableLiveData<Int>()
-    private val _imageKeys = imageToStressLevelMap.keys
+    private val _imageKeys = imageToStressLevelMap.keys.shuffled()
 
     val selectedImageMutable: LiveData<Int>
         get() = _selectedImageId
