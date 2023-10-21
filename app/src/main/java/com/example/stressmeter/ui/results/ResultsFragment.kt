@@ -3,14 +3,11 @@ package com.example.stressmeter.ui.results
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TableRow
 import android.widget.TextView
-import androidx.core.view.get
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import com.example.stressmeter.data.StressData
 import com.example.stressmeter.databinding.FragmentResultsBinding
@@ -85,7 +82,7 @@ class ResultsFragment : Fragment() {
         stressData.forEach { data ->
             val row = TableRow(requireContext())
             val lp = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT)
-            row.layoutParams = lp;
+            row.layoutParams = lp
             val timestamp = data.getTimestamp()
             val score = data.getScore()
             val c1 = createTableCell(timestamp)

@@ -18,6 +18,7 @@ class StressData(
         }
     }
 
+    @Suppress("unused")
     fun getResourceId(): Int {
         return _resourceId
     }

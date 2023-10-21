@@ -1,28 +1,25 @@
 package com.example.stressmeter
 
-import android.media.MediaPlayer
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.ui.NavigationUI
 import com.example.stressmeter.databinding.ActivityMainBinding
 import com.example.stressmeter.managers.CsvFileManager
 import com.example.stressmeter.managers.MediaPlayerManager
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
+    // TODO: Sound and Vibrator goes on after rotation
 
 
-    private var _isFirstNavigation = true;
+    private var _renderCount = 0
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
@@ -32,7 +29,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         CsvFileManager.init(this)
+        MediaPlayerManager.init(this)
 
+        if (savedInstanceState != null) {
+            _renderCount = savedInstanceState.getInt(RENDER_COUNT_KEY)
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -52,11 +53,11 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        MediaPlayerManager.init(applicationContext)
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (_isFirstNavigation) {
-                _isFirstNavigation = false
+        navController.addOnDestinationChangedListener { _, _, _ ->
+            println("navController.addOnDestinationChangedListener")
+            if (_renderCount == 0) {
+                _renderCount++
                 return@addOnDestinationChangedListener
             }
             MediaPlayerManager.stop()
@@ -70,10 +71,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(
-            item, navController
-        ) || super.onOptionsItemSelected(item)
+    private fun onNavigationItemSelected(menuItem: MenuItem) {
+        when (menuItem.itemId) {
+            R.id.nav_home -> navController.navigate(R.id.nav_home)
+            R.id.nav_results -> navController.navigate(R.id.nav_results)
+            else -> throw NoSuchFieldException("Cannot find navigation item id: ${menuItem.itemId}")
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -85,11 +88,19 @@ class MainActivity : AppCompatActivity() {
         MediaPlayerManager.release()
     }
 
-    private fun onNavigationItemSelected(menuItem: MenuItem) {
-        when (menuItem.itemId) {
-            R.id.nav_home -> navController.navigate(R.id.nav_home)
-            R.id.nav_results -> navController.navigate(R.id.nav_results)
-            else -> throw NoSuchFieldException("Cannot find navigation item id: ${menuItem.itemId}")
-        }
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.run { putInt(RENDER_COUNT_KEY, _renderCount) }
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        _renderCount = savedInstanceState.getInt(RENDER_COUNT_KEY)
+        println("onRestoreInstanceState $_renderCount")
+        super.onSaveInstanceState(savedInstanceState)
+    }
+
+    companion object {
+        const val DEBUG = false
+        private const val RENDER_COUNT_KEY = "RENDER_COUNT_KEY"
     }
 }

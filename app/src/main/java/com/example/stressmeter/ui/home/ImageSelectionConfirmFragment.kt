@@ -1,17 +1,15 @@
 package com.example.stressmeter.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.stressmeter.R
-import com.example.stressmeter.managers.MediaPlayerManager
 
 class ImageSelectionConfirmFragment : Fragment() {
     override fun onCreateView(
@@ -33,7 +31,6 @@ class ImageSelectionConfirmFragment : Fragment() {
         }
         view.findViewById<Button>(R.id.button_stress_image_save).setOnClickListener {
             stressMeterViewModel.saveSelectedImage()
-//            MediaPlayerManager.release()
             requireActivity().finish()
         }
         return view

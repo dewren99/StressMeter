@@ -6,10 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.example.stressmeter.R
 import com.example.stressmeter.data.StressData
 import com.example.stressmeter.managers.CsvFileManager
-import com.example.stressmeter.managers.Store
-import java.util.Date
-import kotlin.time.TimeSource
-import kotlin.time.measureTime
 
 private val imageToStressLevelMap = mapOf(
     R.drawable.psm_alarm_clock to 5,
