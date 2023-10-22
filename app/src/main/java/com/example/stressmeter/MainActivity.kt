@@ -28,10 +28,6 @@ class MainActivity : AppCompatActivity() {
         CsvFileManager.init(this)
         MediaPlayerManager.init(this)
 
-        if (savedInstanceState != null) {
-            _renderCount = savedInstanceState.getInt(RENDER_COUNT_KEY)
-        }
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -65,8 +61,6 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.closeDrawers()
             true
         }
-
-        MediaPlayerManager.play()
     }
 
     private fun onNavigationItemSelected(menuItem: MenuItem) {
@@ -86,18 +80,12 @@ class MainActivity : AppCompatActivity() {
         MediaPlayerManager.release()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.run { putInt(RENDER_COUNT_KEY, _renderCount) }
-        super.onSaveInstanceState(outState)
-    }
-
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        _renderCount = savedInstanceState.getInt(RENDER_COUNT_KEY)
+        MediaPlayerManager.stop()
         super.onSaveInstanceState(savedInstanceState)
     }
 
     companion object {
         const val DEBUG = false
-        private const val RENDER_COUNT_KEY = "RENDER_COUNT_KEY"
     }
 }

@@ -11,8 +11,7 @@ import com.example.stressmeter.R
 @Suppress("DEPRECATION")
 class MediaPlayerManager {
     companion object {
-        // lateinit doesn't work well with mediaPlayer
-        private var _mediaPlayer: MediaPlayer? = null
+        private lateinit var _mediaPlayer: MediaPlayer
         private var _vibrator: VibratorManager? = null
         private var _vibratorDeprecated: Vibrator? = null
 
@@ -57,21 +56,23 @@ class MediaPlayerManager {
             initVibrator(context)
 
             _mediaPlayer = MediaPlayer.create(context, R.raw.notif_sound)
-            _mediaPlayer?.setOnCompletionListener { it.start() }
+            _mediaPlayer.setOnCompletionListener { it.start() }
+
+            play()
         }
 
         fun release() {
-            _mediaPlayer?.release()
+            _mediaPlayer.release()
         }
 
         fun stop() {
             stopVibrator()
-            _mediaPlayer?.stop()
+            _mediaPlayer.pause()
         }
 
-        fun play() {
+        private fun play() {
             playVibrator()
-            _mediaPlayer?.start()
+            _mediaPlayer.start()
         }
     }
 }
