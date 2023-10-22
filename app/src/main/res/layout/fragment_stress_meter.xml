@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
-        android:text="Touch the image that best captures how stressed you feel right now"
+        android:text="@string/touch_the_image_that_best_captures_how_stressed_you_feel_right_now"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,14 +22,15 @@
         android:layout_height="0dp"
         android:numColumns="4"
         app:layout_constraintBottom_toTopOf="@id/button_more_images"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_stress_meter"></GridView>
+        app:layout_constraintTop_toBottomOf="@+id/text_view_stress_meter" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_more_images"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="MORE IMAGES"
+        android:text="@string/more_images"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/grid_view_stress_meter" />
+        app:layout_constraintTop_toBottomOf="@id/grid_view_stress_meter"
+        tools:ignore="VisualLintButtonSize" />
 </androidx.constraintlayout.widget.ConstraintLayout>

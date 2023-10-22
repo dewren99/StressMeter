@@ -16,9 +16,6 @@ import com.example.stressmeter.managers.MediaPlayerManager
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
-    // TODO: Sound and Vibrator goes on after rotation
-
-
     private var _renderCount = 0
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -55,7 +52,6 @@ class MainActivity : AppCompatActivity() {
 
 
         navController.addOnDestinationChangedListener { _, _, _ ->
-            println("navController.addOnDestinationChangedListener")
             if (_renderCount == 0) {
                 _renderCount++
                 return@addOnDestinationChangedListener
@@ -69,6 +65,8 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.closeDrawers()
             true
         }
+
+        MediaPlayerManager.play()
     }
 
     private fun onNavigationItemSelected(menuItem: MenuItem) {
@@ -95,7 +93,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         _renderCount = savedInstanceState.getInt(RENDER_COUNT_KEY)
-        println("onRestoreInstanceState $_renderCount")
         super.onSaveInstanceState(savedInstanceState)
     }
 

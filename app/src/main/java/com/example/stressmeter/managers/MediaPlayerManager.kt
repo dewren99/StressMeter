@@ -11,7 +11,8 @@ import com.example.stressmeter.R
 @Suppress("DEPRECATION")
 class MediaPlayerManager {
     companion object {
-        private lateinit var _mediaPlayer: MediaPlayer
+        // lateinit doesn't work well with mediaPlayer
+        private var _mediaPlayer: MediaPlayer? = null
         private var _vibrator: VibratorManager? = null
         private var _vibratorDeprecated: Vibrator? = null
 
@@ -23,17 +24,9 @@ class MediaPlayerManager {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 _vibrator =
                     context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                _vibrator!!.defaultVibrator.vibrate(
-                    VibrationEffect.createWaveform(longArrayOf(500, 500, 500), 1)
-                )
                 return
             }
             _vibratorDeprecated = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            if (Build.VERSION.SDK_INT >= 26) {
-                _vibratorDeprecated!!.vibrate(VibrationEffect.createWaveform(longArrayOf(500), 0))
-                return
-            }
-            _vibratorDeprecated!!.vibrate(500L)
         }
 
         private fun stopVibrator() {
@@ -46,21 +39,39 @@ class MediaPlayerManager {
             _vibratorDeprecated = null
         }
 
+        private fun playVibrator() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                _vibrator?.defaultVibrator?.vibrate(
+                    VibrationEffect.createWaveform(longArrayOf(500, 500, 500), 1)
+                )
+                return
+            }
+            if (Build.VERSION.SDK_INT >= 26) {
+                _vibratorDeprecated?.vibrate(VibrationEffect.createWaveform(longArrayOf(500), 0))
+                return
+            }
+            _vibratorDeprecated?.vibrate(500L)
+        }
+
         fun init(context: Context) {
             initVibrator(context)
 
             _mediaPlayer = MediaPlayer.create(context, R.raw.notif_sound)
-            _mediaPlayer.setOnCompletionListener { it.start() }
-            _mediaPlayer.start()
+            _mediaPlayer?.setOnCompletionListener { it.start() }
         }
 
         fun release() {
-            _mediaPlayer.release()
+            _mediaPlayer?.release()
         }
 
         fun stop() {
             stopVibrator()
-            _mediaPlayer.stop()
+            _mediaPlayer?.stop()
+        }
+
+        fun play() {
+            playVibrator()
+            _mediaPlayer?.start()
         }
     }
 }

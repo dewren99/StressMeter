@@ -1,14 +1,19 @@
 <resources>
     <string name="app_name">StressMeter</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Stress Meter</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
     <string name="menu_home">Stress Meter</string>
     <string name="menu_results">Results</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="stress_image">Stress Image</string>
+    <string name="image_chosen">Image Chosen</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="summary_of_results">Summary of Results</string>
+    <string name="timestamp">Timestamp</string>
+    <string name="score">Score</string>
+    <string name="scores_and_timestamps">Scores and timestamps</string>
+    <string name="touch_the_image_that_best_captures_how_stressed_you_feel_right_now">Touch the image that best captures how stressed you feel right now</string>
+    <string name="more_images">MORE IMAGES</string>
 </resources>
